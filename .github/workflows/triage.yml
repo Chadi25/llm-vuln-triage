@@ -21,7 +21,7 @@ jobs:
         with: { python-version: "3.11" }
       - run: pip install -r requirements.txt semgrep
       - name: Installer Trivy
-        uses: aquasecurity/setup-trivy@v0.2.2
-      - run: ./scripts/run_scanners.sh
+        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567  # v0.3.1, épinglé par SHA
+      - run: bash scripts/run_scanners.sh
       - uses: actions/upload-artifact@v4
         with: { name: triage-real, path: out-real/ }
