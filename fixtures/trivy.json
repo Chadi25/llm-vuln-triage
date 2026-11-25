@@ -1,0 +1,92 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": "target_app",
+  "ArtifactType": "filesystem",
+  "Metadata": {
+    "_comment": "SYNTHETIC FIXTURE - format trivy fs -f json"
+  },
+  "Results": [
+    {
+      "Target": "target_app/requirements.txt",
+      "Class": "lang-pkgs",
+      "Type": "pip",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2020-14343",
+          "PkgName": "PyYAML",
+          "InstalledVersion": "5.3.1",
+          "FixedVersion": "5.4",
+          "Severity": "CRITICAL",
+          "Title": "PyYAML: incomplete fix for CVE-2020-1747 (arbitrary code execution via full_load)",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2020-14343",
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          }
+        },
+        {
+          "VulnerabilityID": "CVE-2019-10906",
+          "PkgName": "Jinja2",
+          "InstalledVersion": "2.10",
+          "FixedVersion": "2.10.1",
+          "Severity": "HIGH",
+          "Title": "Jinja2: sandbox escape via str.format",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-10906",
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:N/A:N",
+              "V3Score": 8.6
+            }
+          }
+        },
+        {
+          "VulnerabilityID": "CVE-2018-1000656",
+          "PkgName": "Flask",
+          "InstalledVersion": "0.12.2",
+          "FixedVersion": "0.12.3",
+          "Severity": "HIGH",
+          "Title": "Flask: denial of service via crafted JSON data (incorrect encoding)",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-1000656",
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          }
+        },
+        {
+          "VulnerabilityID": "CVE-2018-18074",
+          "PkgName": "requests",
+          "InstalledVersion": "2.19.1",
+          "FixedVersion": "2.20.0",
+          "Severity": "HIGH",
+          "Title": "requests: Authorization header sent on HTTPS to HTTP redirect",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2018-18074",
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            }
+          }
+        },
+        {
+          "VulnerabilityID": "CVE-2019-11324",
+          "PkgName": "urllib3",
+          "InstalledVersion": "1.24.1",
+          "FixedVersion": "1.24.2",
+          "Severity": "HIGH",
+          "Title": "urllib3: certificate validation issue with custom CA certificates",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2019-11324",
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+              "V3Score": 7.5
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

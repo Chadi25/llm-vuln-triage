@@ -1,0 +1,7 @@
+# Cœur (obligatoire)
+PyYAML>=6.0
+Jinja2>=3.1
+# Recommandé : validation stricte de la sortie LLM (sinon validateur intégré)
+pydantic>=2.5
+# Tests
+pytest>=8

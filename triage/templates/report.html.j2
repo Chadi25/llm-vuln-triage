@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><title>Rapport de triage — {{ target }}</title>
+<style>
+body{font:14px/1.5 system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;color:#1d2433}
+h1{font-size:1.6rem}h2{margin-top:2rem;border-bottom:1px solid #dde;padding-bottom:.3rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem}
+.kpi{border:1px solid #dde;border-radius:8px;padding:.8rem}.kpi b{display:block;font-size:1.6rem}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{border-bottom:1px solid #eef;padding:.4rem;text-align:left;vertical-align:top}
+th{background:#f5f6fa}.P1{color:#b00020;font-weight:700}.P2{color:#c25400;font-weight:700}.P3{color:#8a6d00}.P4{color:#555}
+code,pre{background:#f5f6fa;border-radius:4px;padding:.1rem .3rem;font-size:12px}pre{padding:.5rem;white-space:pre-wrap}
+.bar{height:14px;background:#3b5bdb;border-radius:3px}.muted{color:#667}
+</style></head><body>
+<h1>Rapport de triage de vulnérabilités</h1>
+<p class="muted">Cible : <code>{{ target }}</code> · mode : <b>{{ mode }}</b> · généré le {{ date }}{% if synthetic %} · <b>rapports d'entrée synthétiques (fixtures)</b>{% endif %}</p>
+
+<h2>Avant / après</h2>
+<div class="kpis">
+ <div class="kpi"><b>{{ s.raw }}</b>alertes brutes</div>
+ <div class="kpi"><b>{{ s.deduplicated }}</b>après dédoublonnage</div>
+ <div class="kpi"><b>{{ s.false_positives }}</b>faux positifs écartés</div>
+ <div class="kpi"><b>{{ s.kept }}</b>à traiter ({{ s.reduction_pct }} % de bruit en moins)</div>
+</div>
+<h3>Répartition des priorités</h3>
+<table>{% for p, n in s.by_priority.items() %}<tr><td class="{{p}}" style="width:60px">{{p}}</td><td style="width:40px">{{n}}</td><td><div class="bar" style="width:{{ (n * 100 / (s.kept or 1))|round(0) }}%"></div></td></tr>{% endfor %}</table>
+{% if ev %}
+<h2>Qualité du filtre de faux positifs (vérité terrain)</h2>
+<p>Précision <b>{{ ev.precision }}</b> · rappel <b>{{ ev.recall }}</b> · {{ ev.fp_filtered_correct }} FP correctement écartés · {{ ev.real_vulns_dropped }} vraie(s) faille(s) écartée(s) à tort · {{ ev.fp_missed }} FP manqué(s) · {{ ev.matched }}/{{ ev.labelled }} entrées annotées appariées.</p>
+{% endif %}
+
+<h2>Alertes à traiter</h2>
+<table><tr><th>Prio</th><th>Score</th><th>Emplacement</th><th>Faiblesse</th><th>Outils</th><th>Justification / contexte</th><th>Remédiation</th></tr>
+{% for f in kept %}<tr><td class="{{f.priority}}">{{f.priority}}{% if f.verdict=='REVIEW' %}<br><small>REVIEW</small>{% endif %}</td><td>{{f.score}}</td>
+<td><code>{{f.location}}</code></td><td>{{ f.cwe or f.rule_id }}<br><small class="muted">{{ f.message[:110] }}</small></td>
+<td>{{ f.tools|join(', ') }}{% if f.raw_count>1 %}<br><small>{{f.raw_count}} alertes fusionnées</small>{% endif %}</td>
+<td>{{ f.justification }}{% if f.kind=='sca' %}<br><small>atteignabilité : {{ f.reachability }}</small>{% elif f.exposed_http %}<br><small>exposé via route HTTP</small>{% endif %}</td>
+<td>{{ f.remediation }}{% if f.patch %}<pre>{{ f.patch }}</pre>{% endif %}</td></tr>{% endfor %}
+</table>
+
+<h2>Faux positifs écartés (à confirmer par un humain)</h2>
+<table><tr><th>Emplacement</th><th>Règle(s)</th><th>Justification</th></tr>
+{% for f in fps %}<tr><td><code>{{f.location}}</code></td><td><small>{{ f.rules|join('<br>')|safe }}</small></td><td>{{f.justification}}</td></tr>{% endfor %}
+</table>
+</body></html>

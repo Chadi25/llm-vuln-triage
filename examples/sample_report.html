@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><title>Rapport de triage — target_app</title>
+<style>
+body{font:14px/1.5 system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;color:#1d2433}
+h1{font-size:1.6rem}h2{margin-top:2rem;border-bottom:1px solid #dde;padding-bottom:.3rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem}
+.kpi{border:1px solid #dde;border-radius:8px;padding:.8rem}.kpi b{display:block;font-size:1.6rem}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{border-bottom:1px solid #eef;padding:.4rem;text-align:left;vertical-align:top}
+th{background:#f5f6fa}.P1{color:#b00020;font-weight:700}.P2{color:#c25400;font-weight:700}.P3{color:#8a6d00}.P4{color:#555}
+code,pre{background:#f5f6fa;border-radius:4px;padding:.1rem .3rem;font-size:12px}pre{padding:.5rem;white-space:pre-wrap}
+.bar{height:14px;background:#3b5bdb;border-radius:3px}.muted{color:#667}
+</style></head><body>
+<h1>Rapport de triage de vulnérabilités</h1>
+<p class="muted">Cible : <code>target_app</code> · mode : <b>rules (déterministe)</b> · généré le 2026-11-24 14:09 · <b>rapports d'entrée synthétiques (fixtures)</b></p>
+
+<h2>Avant / après</h2>
+<div class="kpis">
+ <div class="kpi"><b>25</b>alertes brutes</div>
+ <div class="kpi"><b>20</b>après dédoublonnage</div>
+ <div class="kpi"><b>5</b>faux positifs écartés</div>
+ <div class="kpi"><b>15</b>à traiter (40.0 % de bruit en moins)</div>
+</div>
+<h3>Répartition des priorités</h3>
+<table><tr><td class="P1" style="width:60px">P1</td><td style="width:40px">5</td><td><div class="bar" style="width:33.0%"></div></td></tr><tr><td class="P2" style="width:60px">P2</td><td style="width:40px">5</td><td><div class="bar" style="width:33.0%"></div></td></tr><tr><td class="P3" style="width:60px">P3</td><td style="width:40px">4</td><td><div class="bar" style="width:27.0%"></div></td></tr><tr><td class="P4" style="width:60px">P4</td><td style="width:40px">1</td><td><div class="bar" style="width:7.0%"></div></td></tr></table>
+
+<h2>Qualité du filtre de faux positifs (vérité terrain)</h2>
+<p>Précision <b>1.0</b> · rappel <b>1.0</b> · 5 FP correctement écartés · 0 vraie(s) faille(s) écartée(s) à tort · 0 FP manqué(s) · 20/20 entrées annotées appariées.</p>
+
+
+<h2>Alertes à traiter</h2>
+<table><tr><th>Prio</th><th>Score</th><th>Emplacement</th><th>Faiblesse</th><th>Outils</th><th>Justification / contexte</th><th>Remédiation</th></tr>
+<tr><td class="P1">P1</td><td>10.0</td>
+<td><code>app.py:31</code></td><td>CWE-89<br><small class="muted">Detected possible formatted SQL query. Use parameterized queries instead.</small></td>
+<td>semgrep<br><small>2 alertes fusionnées</small></td>
+<td>L&#39;argument de `execute` dérive d&#39;un paramètre HTTP (request.*) dans `user_lookup()` sans neutralisation.<br><small>exposé via route HTTP</small></td>
+<td>Utiliser une requête paramétrée.<pre>cur.execute(&#34;SELECT name, email FROM users WHERE id = ?&#34;, (user_id,))</pre></td></tr><tr><td class="P1">P1</td><td>10.0</td>
+<td><code>app.py:47</code></td><td>CWE-78<br><small class="muted">Found &#39;subprocess&#39; function with &#39;shell=True&#39;. This is dangerous.</small></td>
+<td>semgrep<br><small>2 alertes fusionnées</small></td>
+<td>L&#39;argument de `check_output` dérive d&#39;un paramètre HTTP (request.*) dans `ping()` sans neutralisation.<br><small>exposé via route HTTP</small></td>
+<td>Supprimer shell=True et passer une liste d&#39;arguments ; valider l&#39;hôte (ipaddress / regex DNS).<pre>subprocess.check_output([&#34;ping&#34;, &#34;-c&#34;, &#34;1&#34;, host], shell=False, timeout=5)</pre></td></tr><tr><td class="P1">P1</td><td>10.0</td>
+<td><code>app.py:64</code></td><td>CWE-502<br><small class="muted">Avoid using insecure deserialization library, backed by `pickle`, `_pickle`, `cpickle`, `dill`, `shelve`, or `</small></td>
+<td>semgrep</td>
+<td>Donnée issue de la requête HTTP atteignant le point sensible dans `load_config()`.<br><small>exposé via route HTTP</small></td>
+<td>Ne jamais désérialiser une donnée non fiable : yaml.safe_load, JSON signé à la place de pickle.<pre>cfg = yaml.safe_load(request.data)</pre></td></tr><tr><td class="P1">P1</td><td>10.0</td>
+<td><code>app.py:76</code></td><td>CWE-502<br><small class="muted">Avoid using `pickle`, which is known to lead to code execution vulnerabilities.</small></td>
+<td>semgrep</td>
+<td>Donnée issue de la requête HTTP atteignant le point sensible dans `restore_session()`.<br><small>exposé via route HTTP</small></td>
+<td>Ne jamais désérialiser une donnée non fiable : yaml.safe_load, JSON signé à la place de pickle.<pre>cfg = yaml.safe_load(request.data)</pre></td></tr><tr><td class="P1">P1</td><td>10.0</td>
+<td><code>pyyaml==5.3.1</code></td><td>CVE-2020-14343<br><small class="muted">PyYAML: incomplete fix for CVE-2020-1747 (arbitrary code execution via full_load)</small></td>
+<td>grype, trivy<br><small>2 alertes fusionnées</small></td>
+<td>Version installée dans la plage vulnérable déclarée par la base de l&#39;outil.<br><small>atteignabilité : direct</small></td>
+<td>Mettre à jour `pyyaml` 5.3.1 → ≥ 5.4.<pre>pyyaml&gt;=5.4</pre></td></tr><tr><td class="P2">P2</td><td>8.5</td>
+<td><code>app.py:59</code></td><td>CWE-22<br><small class="muted">Found request data in a call to a file path function.</small></td>
+<td>semgrep</td>
+<td>Donnée issue de la requête HTTP atteignant le point sensible dans `download()`.<br><small>exposé via route HTTP</small></td>
+<td>Résoudre le chemin et vérifier qu&#39;il reste sous le répertoire de base (ou flask.safe_join).<pre>p = (Path(BASE_DIR) / name).resolve()
+if not p.is_relative_to(Path(BASE_DIR).resolve()):
+    abort(400)</pre></td></tr><tr><td class="P2">P2</td><td>8.0</td>
+<td><code>flask==0.12.2</code></td><td>CVE-2018-1000656<br><small class="muted">Flask: denial of service via crafted JSON data (incorrect encoding)</small></td>
+<td>trivy</td>
+<td>Version installée dans la plage vulnérable déclarée par la base de l&#39;outil.<br><small>atteignabilité : direct</small></td>
+<td>Mettre à jour `flask` 0.12.2 → ≥ 0.12.3.<pre>flask&gt;=0.12.3</pre></td></tr><tr><td class="P2">P2</td><td>7.6</td>
+<td><code>jinja2==2.10</code></td><td>CVE-2019-10906<br><small class="muted">Jinja2: sandbox escape via str.format</small></td>
+<td>grype, trivy<br><small>2 alertes fusionnées</small></td>
+<td>Version installée dans la plage vulnérable déclarée par la base de l&#39;outil.<br><small>atteignabilité : transitive</small></td>
+<td>Mettre à jour `jinja2` 2.10 → ≥ 2.10.1.<pre>jinja2&gt;=2.10.1</pre></td></tr><tr><td class="P2">P2</td><td>7.0</td>
+<td><code>app.py:85</code></td><td>CWE-327<br><small class="muted">Detected MD5 hash algorithm which is considered insecure.</small></td>
+<td>semgrep</td>
+<td>Algorithme de hachage rapide appliqué à un mot de passe/secret (cassable hors ligne).</td>
+<td>Mot de passe : utiliser un KDF lent (argon2id, scrypt, bcrypt) avec sel.<pre>hashlib.scrypt(pwd.encode(), salt=os.urandom(16), n=2**14, r=8, p=1)</pre></td></tr><tr><td class="P2">P2</td><td>7.0</td>
+<td><code>app.py:89</code></td><td>CWE-489<br><small class="muted">Detected Flask app with debug=True. Do not deploy to production with this flag enabled.</small></td>
+<td>semgrep</td>
+<td>Mode debug actif dans le point d&#39;entrée : console Werkzeug exposée.</td>
+<td>Désactiver le debug hors développement et servir via un serveur WSGI (gunicorn).<pre>app.run(debug=os.getenv(&#34;FLASK_DEBUG&#34;) == &#34;1&#34;)</pre></td></tr><tr><td class="P3">P3</td><td>6.5</td>
+<td><code>werkzeug==0.14.1</code></td><td>CVE-2019-14806<br><small class="muted">Werkzeug: insufficient randomness of the debugger PIN in Docker containers</small></td>
+<td>grype</td>
+<td>Version installée dans la plage vulnérable déclarée par la base de l&#39;outil.<br><small>atteignabilité : transitive</small></td>
+<td>Mettre à jour `werkzeug` 0.14.1 → ≥ 0.15.3.<pre>werkzeug&gt;=0.15.3</pre></td></tr><tr><td class="P3">P3</td><td>5.5</td>
+<td><code>app.py:17</code></td><td>CWE-798<br><small class="muted">Hardcoded secret detected.</small></td>
+<td>semgrep</td>
+<td>Littéral affecté à une clé de configuration sensible dans du code déployé.</td>
+<td>Sortir le secret du code (variable d&#39;environnement / coffre de secrets) puis le faire tourner.<pre>app.config[&#34;SECRET_KEY&#34;] = os.environ[&#34;FLASK_SECRET_KEY&#34;]</pre></td></tr><tr><td class="P3">P3</td><td>5.0</td>
+<td><code>requests==2.19.1</code></td><td>CVE-2018-18074<br><small class="muted">requests: Authorization header sent on HTTPS to HTTP redirect</small></td>
+<td>grype, trivy<br><small>2 alertes fusionnées</small></td>
+<td>Version installée dans la plage vulnérable déclarée par la base de l&#39;outil.<br><small>atteignabilité : unused</small></td>
+<td>Mettre à jour `requests` 2.19.1 → ≥ 2.20.0.<pre>requests&gt;=2.20.0</pre></td></tr><tr><td class="P3">P3</td><td>5.0</td>
+<td><code>urllib3==1.24.1</code></td><td>CVE-2019-11324<br><small class="muted">urllib3: certificate validation issue with custom CA certificates</small></td>
+<td>trivy</td>
+<td>Version installée dans la plage vulnérable déclarée par la base de l&#39;outil.<br><small>atteignabilité : unused</small></td>
+<td>Mettre à jour `urllib3` 1.24.1 → ≥ 1.24.2.<pre>urllib3&gt;=1.24.2</pre></td></tr><tr><td class="P4">P4</td><td>3.6</td>
+<td><code>urllib3==1.24.1</code></td><td>CVE-2019-11236<br><small class="muted">urllib3: CRLF injection in the request parameter</small></td>
+<td>grype</td>
+<td>Version installée dans la plage vulnérable déclarée par la base de l&#39;outil.<br><small>atteignabilité : unused</small></td>
+<td>Mettre à jour `urllib3` 1.24.1 → ≥ 1.24.3.<pre>urllib3&gt;=1.24.3</pre></td></tr>
+</table>
+
+<h2>Faux positifs écartés (à confirmer par un humain)</h2>
+<table><tr><th>Emplacement</th><th>Règle(s)</th><th>Justification</th></tr>
+<tr><td><code>app.py:40</code></td><td><small>python.lang.security.audit.formatted-sql-query.formatted-sql-query</small></td><td>Requête SQL entièrement constante et valeurs passées en paramètres liés (`execute(query, params)`) : pas d&#39;injection possible.</td></tr><tr><td><code>app.py:53</code></td><td><small>python.lang.security.audit.subprocess-shell-true.subprocess-shell-true</small></td><td>Commande shell littérale, aucune donnée externe n&#39;atteint `shell=True`.</td></tr><tr><td><code>app.py:70</code></td><td><small>python.lang.security.deserialization.avoid-pyyaml-load.avoid-pyyaml-load</small></td><td>`yaml.load` appelé avec `Loader=SafeLoader` (chargeur sûr).</td></tr><tr><td><code>tests/test_app.py:2</code></td><td><small>generic.secrets.security.detected-generic-secret.detected-generic-secret</small></td><td>Fichier de test (`tests/test_app.py`) : non déployé, valeurs factices.</td></tr><tr><td><code>app.py:81</code></td><td><small>python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5</small></td><td>Hachage déclaré `usedforsecurity=False` (usage non cryptographique, ex. clé de cache).</td></tr>
+</table>
+</body></html>

@@ -1,0 +1,7 @@
+# Dépendances VOLONTAIREMENT obsolètes (cible de démonstration SCA)
+Flask==0.12.2
+Werkzeug==0.14.1
+Jinja2==2.10
+PyYAML==5.3.1
+requests==2.19.1
+urllib3==1.24.1

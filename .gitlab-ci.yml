@@ -1,0 +1,34 @@
+stages: [test, scan]
+
+test:
+  stage: test
+  image: python:3.11-slim
+  script:
+    - pip install -r requirements.txt
+    - python -m pytest -q
+    - python -m triage run --report fixtures/semgrep.sarif --report fixtures/trivy.json --report fixtures/grype.json --src target_app --truth fixtures/ground_truth.yaml --synthetic --out out
+  artifacts: { paths: [out/] }
+
+sast:
+  stage: scan
+  image: semgrep/semgrep:latest
+  script:
+    - semgrep scan --config p/python --config p/flask --sarif -o semgrep.sarif target_app || true
+  artifacts: { paths: [semgrep.sarif] }
+
+sca:
+  stage: scan
+  image: { name: aquasec/trivy:latest, entrypoint: [""] }
+  script:
+    - trivy fs --scanners vuln -f json -o trivy.json target_app
+  artifacts: { paths: [trivy.json] }
+
+triage:
+  stage: scan
+  needs: [sast, sca]
+  image: python:3.11-slim
+  script:
+    - pip install -r requirements.txt
+    - python -m triage run --report semgrep.sarif --report trivy.json --src target_app --out out-real --fail-on P1
+  allow_failure: true      # démo : la cible est volontairement vulnérable
+  artifacts: { paths: [out-real/] }

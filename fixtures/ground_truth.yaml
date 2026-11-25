@@ -1,0 +1,25 @@
+# Vérité terrain ÉCRITE À LA MAIN (revue manuelle du code de target_app/).
+# Une entrée = une vulnérabilité réelle ou un faux positif, APRÈS dédoublonnage.
+# match = extrait de la ligne concernée (la ligne est retrouvée automatiquement).
+sast:
+  - {file: app.py, match: 'cur.execute(f"SELECT', cwe: CWE-89, label: TP, note: "SQLi : f-string avec request.args"}
+  - {file: app.py, match: 'cur.execute(query, (user_id,))', cwe: CWE-89, label: FP, note: "requête constante + paramètres liés"}
+  - {file: app.py, match: 'subprocess.check_output("ping', cwe: CWE-78, label: TP, note: "injection de commande via host"}
+  - {file: app.py, match: 'subprocess.run("ls -la', cwe: CWE-78, label: FP, note: "commande littérale, aucune entrée"}
+  - {file: app.py, match: 'send_file(os.path.join(BASE_DIR, name))', cwe: CWE-22, label: TP, note: "path traversal"}
+  - {file: app.py, match: 'cfg = yaml.load(request.data)', cwe: CWE-502, label: TP, note: "yaml.load sans Loader sur corps HTTP"}
+  - {file: app.py, match: 'yaml.load(f, Loader=yaml.SafeLoader)', cwe: CWE-502, label: FP, note: "SafeLoader explicite"}
+  - {file: app.py, match: 'pickle.loads(bytes.fromhex(blob))', cwe: CWE-502, label: TP, note: "pickle sur cookie"}
+  - {file: app.py, match: 'hashlib.md5(payload, usedforsecurity=False)', cwe: CWE-327, label: FP, note: "clé de cache, usedforsecurity=False"}
+  - {file: app.py, match: 'hashlib.md5(pwd.encode())', cwe: CWE-327, label: TP, note: "MD5 sur mot de passe"}
+  - {file: app.py, match: 'debug=True', cwe: CWE-489, label: TP, note: "debug Werkzeug exposé sur 0.0.0.0"}
+  - {file: app.py, match: 'app.config["SECRET_KEY"] =', cwe: CWE-798, label: TP, note: "clé Flask en dur"}
+  - {file: tests/test_app.py, match: 'TEST_PASSWORD = ', cwe: CWE-798, label: FP, note: "valeur factice dans un test"}
+sca:
+  - {package: pyyaml, id: CVE-2020-14343, label: TP}
+  - {package: jinja2, id: CVE-2019-10906, label: TP}
+  - {package: flask, id: CVE-2018-1000656, label: TP}
+  - {package: requests, id: CVE-2018-18074, label: TP}
+  - {package: urllib3, id: CVE-2019-11324, label: TP}
+  - {package: urllib3, id: CVE-2019-11236, label: TP}
+  - {package: werkzeug, id: CVE-2019-14806, label: TP}

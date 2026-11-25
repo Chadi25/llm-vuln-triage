@@ -1,0 +1,563 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/os/schemas/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Semgrep OSS",
+          "semanticVersion": "SYNTHETIC-FIXTURE",
+          "rules": [
+            {
+              "id": "python.flask.security.injection.tainted-sql-string.tainted-sql-string",
+              "name": "python.flask.security.injection.tainted-sql-string.tainted-sql-string",
+              "shortDescription": {
+                "text": "Detected user input used to manually construct a SQL string."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-89: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "python.lang.security.audit.formatted-sql-query.formatted-sql-query",
+              "name": "python.lang.security.audit.formatted-sql-query.formatted-sql-query",
+              "shortDescription": {
+                "text": "Detected possible formatted SQL query. Use parameterized queries instead."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-89: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+              "name": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+              "shortDescription": {
+                "text": "Found 'subprocess' function with 'shell=True'. This is dangerous."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-78: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "python.flask.security.injection.subprocess-injection.subprocess-injection",
+              "name": "python.flask.security.injection.subprocess-injection.subprocess-injection",
+              "shortDescription": {
+                "text": "Detected user input entering a subprocess call unsafely."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-78: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "python.flask.security.injection.path-traversal-open.path-traversal-open",
+              "name": "python.flask.security.injection.path-traversal-open.path-traversal-open",
+              "shortDescription": {
+                "text": "Found request data in a call to a file path function."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-22: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "python.lang.security.deserialization.avoid-pyyaml-load.avoid-pyyaml-load",
+              "name": "python.lang.security.deserialization.avoid-pyyaml-load.avoid-pyyaml-load",
+              "shortDescription": {
+                "text": "Avoid using insecure deserialization library, backed by `pickle`, `_pickle`, `cpickle`, `dill`, `shelve`, or `yaml`."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-502: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "python.lang.security.deserialization.pickle.avoid-pickle",
+              "name": "python.lang.security.deserialization.pickle.avoid-pickle",
+              "shortDescription": {
+                "text": "Avoid using `pickle`, which is known to lead to code execution vulnerabilities."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-502: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+              "name": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+              "shortDescription": {
+                "text": "Detected MD5 hash algorithm which is considered insecure."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-327: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "python.flask.security.audit.debug-enabled.debug-enabled",
+              "name": "python.flask.security.audit.debug-enabled.debug-enabled",
+              "shortDescription": {
+                "text": "Detected Flask app with debug=True. Do not deploy to production with this flag enabled."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-489: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            },
+            {
+              "id": "generic.secrets.security.detected-generic-secret.detected-generic-secret",
+              "name": "generic.secrets.security.detected-generic-secret.detected-generic-secret",
+              "shortDescription": {
+                "text": "Hardcoded secret detected."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "CWE-798: see MITRE CWE",
+                  "security"
+                ],
+                "precision": "very-high"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "python.flask.security.injection.tainted-sql-string.tainted-sql-string",
+          "level": "error",
+          "message": {
+            "text": "Detected user input used to manually construct a SQL string."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 31,
+                  "endLine": 31,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "cur.execute(f\"SELECT name, email FROM users WHERE id = '{user_id}'\")"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.audit.formatted-sql-query.formatted-sql-query",
+          "level": "warning",
+          "message": {
+            "text": "Detected possible formatted SQL query. Use parameterized queries instead."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 31,
+                  "endLine": 31,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "cur.execute(f\"SELECT name, email FROM users WHERE id = '{user_id}'\")"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.audit.formatted-sql-query.formatted-sql-query",
+          "level": "warning",
+          "message": {
+            "text": "Detected possible formatted SQL query. Use parameterized queries instead."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 40,
+                  "endLine": 40,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "cur.execute(query, (user_id,))"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+          "level": "error",
+          "message": {
+            "text": "Found 'subprocess' function with 'shell=True'. This is dangerous."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 47,
+                  "endLine": 47,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "out = subprocess.check_output(\"ping -c 1 \" + host, shell=True)"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.flask.security.injection.subprocess-injection.subprocess-injection",
+          "level": "error",
+          "message": {
+            "text": "Detected user input entering a subprocess call unsafely."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 47,
+                  "endLine": 47,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "out = subprocess.check_output(\"ping -c 1 \" + host, shell=True)"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+          "level": "error",
+          "message": {
+            "text": "Found 'subprocess' function with 'shell=True'. This is dangerous."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 53,
+                  "endLine": 53,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "subprocess.run(\"ls -la /var/log/app\", shell=True, check=False)"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.flask.security.injection.path-traversal-open.path-traversal-open",
+          "level": "error",
+          "message": {
+            "text": "Found request data in a call to a file path function."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 59,
+                  "endLine": 59,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "return send_file(os.path.join(BASE_DIR, name))"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.deserialization.avoid-pyyaml-load.avoid-pyyaml-load",
+          "level": "error",
+          "message": {
+            "text": "Avoid using insecure deserialization library, backed by `pickle`, `_pickle`, `cpickle`, `dill`, `shelve`, or `yaml`."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 64,
+                  "endLine": 64,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "cfg = yaml.load(request.data)"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.deserialization.avoid-pyyaml-load.avoid-pyyaml-load",
+          "level": "error",
+          "message": {
+            "text": "Avoid using insecure deserialization library, backed by `pickle`, `_pickle`, `cpickle`, `dill`, `shelve`, or `yaml`."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 70,
+                  "endLine": 70,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "return yaml.load(f, Loader=yaml.SafeLoader)"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.deserialization.pickle.avoid-pickle",
+          "level": "warning",
+          "message": {
+            "text": "Avoid using `pickle`, which is known to lead to code execution vulnerabilities."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 76,
+                  "endLine": 76,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "state = pickle.loads(bytes.fromhex(blob))"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+          "level": "warning",
+          "message": {
+            "text": "Detected MD5 hash algorithm which is considered insecure."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 81,
+                  "endLine": 81,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "return hashlib.md5(payload, usedforsecurity=False).hexdigest()"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+          "level": "warning",
+          "message": {
+            "text": "Detected MD5 hash algorithm which is considered insecure."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 85,
+                  "endLine": 85,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "return hashlib.md5(pwd.encode()).hexdigest()"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "python.flask.security.audit.debug-enabled.debug-enabled",
+          "level": "warning",
+          "message": {
+            "text": "Detected Flask app with debug=True. Do not deploy to production with this flag enabled."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 89,
+                  "endLine": 89,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "app.run(host=\"0.0.0.0\", debug=True)"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "generic.secrets.security.detected-generic-secret.detected-generic-secret",
+          "level": "error",
+          "message": {
+            "text": "Hardcoded secret detected."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 17,
+                  "endLine": 17,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "app.config[\"SECRET_KEY\"] = \"s3cr3t-pr0d-k3y-2019\"  # secret en dur"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "generic.secrets.security.detected-generic-secret.detected-generic-secret",
+          "level": "error",
+          "message": {
+            "text": "Hardcoded secret detected."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "target_app/tests/test_app.py",
+                  "uriBaseId": "%SRCROOT%"
+                },
+                "region": {
+                  "startLine": 2,
+                  "endLine": 2,
+                  "startColumn": 5,
+                  "snippet": {
+                    "text": "TEST_PASSWORD = \"test-password-123\""
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
